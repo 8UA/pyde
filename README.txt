@@ -1,5 +1,5 @@
 pyde is a minimalistic text-editor/IDE for Python.
-as for its early development stage, it is suggested to use its "Run" option only to execute simple code.
+As for its early development stage, it is suggested to use its "Run" option only to execute simple code.
 
 ###### LICENSE ######
 

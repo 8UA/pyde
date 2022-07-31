@@ -5,7 +5,6 @@ from tkterminal import Terminal
 from pathlib import Path
 import idlelib.colorizer as ic
 import idlelib.percolator as ip
-import re
 import subprocess
 import ctypes
 import sys
@@ -122,27 +121,37 @@ editor = Text()
 editor.pack(expand=True, fill=BOTH)
 editor.config(bg="#333333", fg="white", font=("Lucida Console",11), height=32, insertbackground='white')
 
+# Status Bar #
+statusbar = Label(ide, text="Hello World!", bd=1, relief=SUNKEN, anchor=W)
+statusbar.pack(side=BOTTOM, fill=X)
+statusbar.config(bg="#333333", fg="gray", font=("System"))
+
 # Command Line #
 terminal = Terminal()
-terminal.linebar = True
 terminal.shell = True
 terminal.basename = f"pyde > "
-terminal.linebar.pack(expand=True, fill=BOTH)
 terminal.pack(expand=True, fill=BOTH)
 terminal.config(bg="#191919", fg="white", font=("Lucida Console",11), width=140)
-terminal.linebar.config(bg="#191919")
 
 # Syntax Highlighting #
 cdg = ic.ColorDelegator()
-cdg.prog = re.compile(r'\b(?P<MYGROUP>tkinter)\b|' + ic.make_pat().pattern, re.S)
-cdg.idprog = re.compile(r'\s+(\w+)', re.S)
-
 # Text highlight colors #
 cdg.tagdefs['COMMENT'] = {'foreground': 'Gray', 'background': '#333333'} # Gray
 cdg.tagdefs['KEYWORD'] = {'foreground': '#B097F0', 'background': '#333333'} # Lilac
 cdg.tagdefs['BUILTIN'] = {'foreground': '#4DC1BF', 'background': '#333333'} # Light Blue
 cdg.tagdefs['STRING'] = {'foreground': '#FFC300', 'background': '#333333'} # Yellow
 cdg.tagdefs['DEFINITION'] = {'foreground': '#EB77AE', 'background': '#333333'} # Hot Pink
+
+
+# Function to count lines and columns of text inside a text widget #
+def countlines(event):
+    (line, c) = map(int, event.widget.index("end-1c").split("."))
+    
+    # Show updates in these widgets: #
+    statusbar.config(text=(f"Line: {line} ", f"Column: {c}"))
+
+editor.bind("<KeyRelease>", countlines)
+
 
 # Init text highlighting #
 ip.Percolator(editor).insertfilter(cdg)

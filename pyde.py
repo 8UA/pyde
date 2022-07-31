@@ -2,10 +2,14 @@
 from tkinter import *
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 from tkterminal import Terminal
+from pathlib import Path
 import idlelib.colorizer as ic
 import idlelib.percolator as ip
 import re
-from pathlib import Path
+import subprocess
+import ctypes
+import sys
+
 
 # Empty path variables #
 file_name = 'No File'
@@ -87,7 +91,7 @@ def save_file_as():
 def preferences_menu():
     win = Toplevel(ide)
     win.title(f'pyde - Preferences')
-    btn = Button(win, text="COMING SOON")
+    btn = Button(win, text="COMING SOON", font=("Lucida Console",24))
     btn.pack(expand=True, fill=BOTH)
     win.geometry("500x500")
 
@@ -116,7 +120,7 @@ ide.config(menu=menu_bar)
 # Text Editor #
 editor = Text()
 editor.pack(expand=True, fill=BOTH)
-editor.config(bg="#333333", fg="white", font=("Lucida Console",11), height=32)
+editor.config(bg="#333333", fg="white", font=("Lucida Console",11), height=32, insertbackground='white')
 
 # Command Line #
 terminal = Terminal()
@@ -133,8 +137,8 @@ cdg = ic.ColorDelegator()
 cdg.prog = re.compile(r'\b(?P<MYGROUP>tkinter)\b|' + ic.make_pat().pattern, re.S)
 cdg.idprog = re.compile(r'\s+(\w+)', re.S)
 
-# Text highlight colors. #
-cdg.tagdefs['COMMENT'] = {'foreground': '#FF0000', 'background': '#333333'} # Red
+# Text highlight colors #
+cdg.tagdefs['COMMENT'] = {'foreground': 'Gray', 'background': '#333333'} # Gray
 cdg.tagdefs['KEYWORD'] = {'foreground': '#B097F0', 'background': '#333333'} # Lilac
 cdg.tagdefs['BUILTIN'] = {'foreground': '#4DC1BF', 'background': '#333333'} # Light Blue
 cdg.tagdefs['STRING'] = {'foreground': '#FFC300', 'background': '#333333'} # Yellow
@@ -142,5 +146,16 @@ cdg.tagdefs['DEFINITION'] = {'foreground': '#EB77AE', 'background': '#333333'} #
 
 # Init text highlighting #
 ip.Percolator(editor).insertfilter(cdg)
+# Start Discord RPC #
+rpc_proc = subprocess.Popen('python discord_rpc.py')
+# Change terminal window title #
+ctypes.windll.kernel32.SetConsoleTitleW('pyde')
+
+print("The idea was originally inspired from this video. -> https://www.youtube.com/watch?v=f1u3me4GYmw")
+print("Star the original repo to make the developer happy and continue the project :) -> https://github.com/8UA/pyde")
 
 ide.mainloop()
+
+# Killing RPC process and exiting program #
+rpc_proc.kill()
+sys.exit()

@@ -47,6 +47,7 @@ def new_file():
     
     editor.delete(1.0, END)
     terminal.clear()
+    statusbar.config(text="Hello World!")
 
 
 def open_file():
@@ -66,6 +67,7 @@ def open_file():
 
         command = f'cd {cd_folder}'
         terminal.run_command(command)
+        statusbar.config(text="Hello World!")
 
 
 def save_file_as():
@@ -117,12 +119,12 @@ menu_bar.add_cascade(label='Run', menu=run_menu)
 ide.config(menu=menu_bar)
 
 # Text Editor #
-editor = Text()
+editor = Text(wrap=NONE)
 editor.pack(expand=True, fill=BOTH)
 editor.config(bg="#333333", fg="white", font=("Lucida Console",11), height=32, insertbackground='white')
 
 # Status Bar #
-statusbar = Label(ide, text="Hello World!", bd=1, relief=SUNKEN, anchor=W)
+statusbar = Label(ide, text="Hello World!", bd=1, relief=SUNKEN, anchor=E)
 statusbar.pack(side=BOTTOM, fill=X)
 statusbar.config(bg="#333333", fg="gray", font=("System"))
 
@@ -146,9 +148,9 @@ cdg.tagdefs['DEFINITION'] = {'foreground': '#EB77AE', 'background': '#333333'} #
 # Function to count lines and columns of text inside a text widget #
 def countlines(event):
     (line, c) = map(int, event.widget.index("end-1c").split("."))
-    
+
     # Show updates in these widgets: #
-    statusbar.config(text=(f"Line: {line} ", f"Column: {c}"))
+    statusbar.config(text=("Line:",line ,"Column:", c))
 
 editor.bind("<KeyRelease>", countlines)
 

@@ -16,7 +16,7 @@ file_path = ''
 
 # Drawing an UI on the screen with given icon and size #
 ide = Tk()
-ide.iconphoto(False, PhotoImage(file='resources\icon.png'))
+ide.iconphoto(False, PhotoImage(file='src/resources/icon.png'))
 ide.title(f'pyde - Python IDE - {file_name}')
 ide.geometry("800x600")
 

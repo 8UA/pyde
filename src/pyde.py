@@ -157,12 +157,13 @@ editor.bind("<KeyRelease>", countlines)
 
 # Init text highlighting #
 ip.Percolator(editor).insertfilter(cdg)
-# Start Discord RPC #
+# Start Discord RPC [WIP] #
 try:
-	rpc_proc = subprocess.Popen('python discord_rpc.py')
-	rpc_proc = subprocess.Popen('discord_rpc.exe')
+	rpc_proc = subprocess.Popen('python discord_rpc.py', PIPE=0) # dev only
+	rpc_proc = subprocess.Popen('discord_rpc.exe', PIPE=0)
 except:
-	pass
+    pass
+
 # Change terminal window title #
 ctypes.windll.kernel32.SetConsoleTitleW('pyde')
 

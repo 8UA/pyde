@@ -90,32 +90,28 @@ def save_file_as():
         terminal.run_command(command)
 
 
-def preferences_menu():
-    win = Toplevel(ide)
-    win.title(f'pyde - Preferences')
-    btn = Button(win, text="COMING SOON", font=("Lucida Console",24))
-    btn.pack(expand=True, fill=BOTH)
-    win.geometry("500x500")
-
-
 def exit_program():
 	exit()
+
 
 # Adding top menu bar with options #
 menu_bar = Menu(ide)
 
 file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label='File', menu=file_menu)
 file_menu.add_command(label='New', command=new_file)
 file_menu.add_command(label='Open', command=open_file)
 file_menu.add_command(label='Save', command=save_file_as)
 file_menu.add_command(label='Save As', command=save_file_as)
-file_menu.add_command(label='Preferences', command=preferences_menu)
 file_menu.add_command(label='Exit', command=exit_program)
-menu_bar.add_cascade(label='File', menu=file_menu)
 
 run_menu = Menu(menu_bar, tearoff=0)
-run_menu.add_command(label='Run', command=run_code)
 menu_bar.add_cascade(label='Run', menu=run_menu)
+run_menu.add_command(label='Run', command=run_code)
+
+prefs_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label='Preferences', menu=prefs_menu)
+prefs_menu.add_command(label='WIP')
 
 ide.config(menu=menu_bar)
 
@@ -158,6 +154,7 @@ editor.bind("<KeyRelease>", countlines)
 
 # Init text highlighting #
 ip.Percolator(editor).insertfilter(cdg)
+
 # Start Discord RPC [WIP] #
 try:
 	rpc_proc = subprocess.Popen('python discord_rpc.py', shell=True, stderr=subprocess.PIPE) # dev only
